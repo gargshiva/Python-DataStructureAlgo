@@ -1,27 +1,54 @@
+# Find nth number in Fibonacci Series
+
 cache = [None] * 100
 
 
-def print_fibonacci_series(n):
-    series = []
-    for i in range(1, n + 1):
-        num = fibonacci_num(i)
-        series.append(num)
+# Brute force
+# Time Complexity : O (2n)
+# Space Complexity : O(1)
+def fibonacci_number_brute_force(n):
+    if n <= 1:
+        return n
+    print("calling {}".format(n))
+    return fibonacci_number_brute_force(n - 1) + fibonacci_number_brute_force(n - 1)
 
-    return series
+
+print("Fibonacci Number : {} ".format(fibonacci_number_brute_force(16)))
 
 
-def fibonacci_num(n):
-    if n <= 2:
-        return 1
-
+# Start with bigger problem , come down to smaller problem
+# Divide and conquer technique
+# DP - Top down approach
+# Time Complexity : O(N) , Since we are calculating sub-problem only once
+# Space Complexity : O(N) , To save the results of sub-problem
+def fibonacci_number_bottom_up_approach(n):
     if cache[n] is not None:
-        print("Cache Hit for {}".format(n))
         return cache[n]
 
-    num = fibonacci_num(n - 1) + fibonacci_num(n - 2)
-    cache[n] = num
-    return num
+    if n <= 1:
+        return n
+
+    cache[n] = fibonacci_number_bottom_up_approach(n - 1) + fibonacci_number_bottom_up_approach(n - 2)
+    return cache[n]
 
 
-# 1 1 2 3 5
-print("Fibonacci Series : {}".format(print_fibonacci_series(10)))
+print("Fibonacci Number : {} ".format(fibonacci_number_bottom_up_approach(32)))
+
+
+# Start with smaller problem and then go to bigger problem
+# Store the results of smaller problem
+# DP - Bottom up approach
+# Time Complexity : O(N) , Since we are calculating sub-problem only once
+# Space Complexity : O(N) , To save the results of sub-problem
+# Can we further optimise the Space complexity ?
+def fibonacci_number_top_down_approach(n):
+    table = [None] * 100
+    table[0] = 1
+    table[1] = 1
+    for i in range(2, n):
+        table[i] = table[i - 1] + table[i - 2]
+
+    return table[n - 1]
+
+
+print("Fibonacci Number : {} ".format(fibonacci_number_top_down_approach(32)))
